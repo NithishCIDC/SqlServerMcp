@@ -25,16 +25,13 @@ var connections = builder.Configuration.GetSection("ConnectionStrings")
 if (connections.Count == 0)
     throw new Exception("No connection strings found in appsettings.json");
 
-var defaultTop = int.Parse(builder.Configuration["Query:DefaultTop"] ?? "100");
-var maxTop = int.Parse(builder.Configuration["Query:MaxTop"] ?? "500");
-
 // ✅ Register SqlTools as singleton
 var options = new SqlToolsOptions
 {
     Connections = connections,
     DefaultConnectionName = connections.Keys.First(), // Default to the first one found
-    DefaultTop = 100,
-    MaxTop = 500
+    DefaultTop = int.Parse(builder.Configuration["Query:DefaultTop"] ?? "100"),
+    MaxTop = int.Parse(builder.Configuration["Query:MaxTop"] ?? "500")
 };
 
 builder.Services.AddSingleton(options);
